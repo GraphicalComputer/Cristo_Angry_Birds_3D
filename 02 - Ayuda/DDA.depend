@@ -1,0 +1,66 @@
+# depslib dependency file v1.0
+1291751310 source:c:\temp\delete\prog\dda\main.cpp
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+
+1262832648 c:\users\hp\desktop\codeblocks-ep\sdk\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1523286897 source:c:\temp\delete\prog\dda\dda.c
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1524841940 source:c:\temp\delete\prog\dda\lectorobj4.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+	<string.h>
+
+1521823349 source:c:\temp\delete\prog\dda\animacion.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1521823167 source:c:\temp\delete\prog\dda\bezier.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1523893427 source:c:\temp\delete\prog\dda\bresenham.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1524056832 source:c:\temp\delete\prog\dda\dda.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1519852330 source:c:\temp\delete\prog\dda\lectorobj44.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<GL/glut.h>
+

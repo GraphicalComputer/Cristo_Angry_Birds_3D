@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1524056832 source:c:\users\hp\documents\github\cristo_angry_birds_3d\01 - angry birds 3d\dda.cpp
+	<GL/gl.h>
+	<GL/glu.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	<stdio.h>
+
+1262832648 c:\users\hp\desktop\codeblocks-ep\sdk\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
