@@ -1184,21 +1184,21 @@ void keyboardFunc(unsigned char Key, int x, int y)
 {
    switch(Key)
    {
-       case 'i': if(Ia < 1.0) Ia += 0.1; break;
-       case 'o': if(Ia > 0.0) Ia -= 0.1; break;
-       case 'k': if(Il < 1.0) Il += 0.1; break;
-       case 'l': if(Il > 0.0) Il -= 0.1; break;
-       case 'a': Tx -= 0.5; break;
-       case 'w': Ty += 0.5; break;
-       case 's': Ty -= 0.5; break;
-       case 'd': Tx += 0.5; break;
+       case 'I': case 'i': if(Ia < 1.0) Ia += 0.1; break;
+       case 'O': case 'o': if(Ia > 0.0) Ia -= 0.1; break;
+       case 'K': case 'k': if(Il < 1.0) Il += 0.1; break;
+       case 'L': case 'l': if(Il > 0.0) Il -= 0.1; break;
+       case 'A': case 'a': Tx -= 0.5; break;
+       case 'W': case 'w': Ty += 0.5; break;
+       case 'S': case 's': Ty -= 0.5; break;
+       case 'D': case 'd': Tx += 0.5; break;
        ////////////////////////
-       case 't': Rx -= 0.5; break;
-       case 'y': Rx += 0.5; break;
-       case 'g': Ry -= 0.5; break;
-       case 'h': Ry += 0.5; break;
-       case 'b': Rz -= 0.5; break;
-       case 'n': Rz += 0.5; break;
+       case 'T': case 't': Rx -= 0.5; break;
+       case 'Y': case 'y': Rx += 0.5; break;
+       case 'G': case 'g': Ry -= 0.5; break;
+       case 'H': case 'h': Ry += 0.5; break;
+       case 'B': case 'b': Rz -= 0.5; break;
+       case 'N': case 'n': Rz += 0.5; break;
         /////////////////////////
        case 32 : Tstart +=1; break;
        case 27 : exit(1); break;
