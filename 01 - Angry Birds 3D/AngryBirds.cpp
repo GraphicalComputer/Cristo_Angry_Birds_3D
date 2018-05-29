@@ -728,7 +728,7 @@ void reshape(int w, int h)
    PLO4->colr.R=0.0;
    PLO4->colr.G=1.0;
    PLO4->colr.B=1.0;
-   //rotateX (PLO3,Rx);
+   rotateX (PLO3,Rx+80.0);
    //rotateY (PLO3,Ry);
    //rotateZ (PLO3,Rz);
    //scale(PLO3,0.8, 0.8, 0.8);
@@ -778,8 +778,9 @@ void display(void)
 	glPushMatrix();
 	glRotatef(spin, 0.0, 1.0, 0.0);
 	glPopMatrix();
-
-        if(lvaCUB){
+	rotateX (PLO2,Rx+1.0);
+        //rotateX (PLO2,Rx++);
+       /*if(lvaCUB){
         if(t<=2.0){
 
             //-6.0,8.5,1.0,1.0,-8.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
@@ -799,8 +800,8 @@ void display(void)
         }
         else
             t=0;
-    }
-
+    }*/
+/*
     if(lvaCUB2){
         if(t<=2.0){
 
@@ -819,8 +820,8 @@ void display(void)
         else
             t=0;
     }
-
-
+*/
+Dib_f_display(PLO2);
 
     glutSwapBuffers();
     glFlush();
@@ -829,7 +830,7 @@ void display(void)
 }
 
 void timer(int insu){
-    glutTimerFunc(20,timer,2);
+    glutTimerFunc(2,timer,2);
     glutPostRedisplay();
 }
 
@@ -929,6 +930,7 @@ void translate(L_Obj lo,float dx,float dy,float dz){
                     {
                         if(lca->face.face [i] == lva->ver.ID)
                         {
+
                             lva->ver.x+=dx;
                             lva->ver.y+=dy;
                             lva->ver.z+=dz;
@@ -1002,6 +1004,9 @@ void rotateX(L_Obj lo,float angle){
                         {
                             lva->ver.y= cos(rad) * lva->ver.y - sin(rad) * lva->ver.z;
                             lva->ver.z= sin(rad) * lva->ver.y - cos(rad) * lva->ver.z;
+                            lo->cabVer->ver.y=lva->ver.y;
+                            lo->cabVer->ver.x=lva->ver.x;
+
                         }
                         lva=lva->sigVer;
                     }
