@@ -982,10 +982,10 @@ void keyboardFunc(unsigned char Key, int x, int y)
 {
    switch(Key)
    {
-       case 'a': if(Ia < 1.0) Ia += 0.1; break;
-       case 'z': if(Ia > 0.0) Ia -= 0.1; break;
-       case 's': if(Il < 1.0) Il += 0.1; break;
-       case 'x': if(Il > 0.0) Il -= 0.1; break;
+       case 'A': case 'a': if(Ia < 1.0) Ia += 0.1; break;
+       case 'Z': case 'z': if(Ia > 0.0) Ia -= 0.1; break;
+       case 'S': case 's': if(Il < 1.0) Il += 0.1; break;
+       case 'X': case 'x': if(Il > 0.0) Il -= 0.1; break;
        case 27 : exit(1); break;
    }
    glutPostRedisplay();
