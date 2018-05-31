@@ -13,7 +13,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#pragma GCC diagnostic ignored "-Wwrite-strings"
+#pragma GCC diagnostic ignored "-Wwrite-strings" // EVITA EXCEPCION Y WARNING //
 
 #define MAX 50
 
@@ -304,7 +304,7 @@ int Ins_F_O(L_Obj lo, char *nom, Face c)
 
     return(res);
 }
-
+/* INICIALIZACIÓN */
 void inici(){
    IniL_Vertex(&PLV);
    IniL_Vertex(&PLV2);
@@ -325,13 +325,13 @@ void inici(){
    //Muestra_memory(PLO);
    //Muestra_memory(PLO2);
 }
-
-void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv, int numOBJ)
+/* LEE ARCHIVOS EN GENERAL*/
+void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv, int numOBJ) // unmOBJ =>Posición del OBJ En arreglo //
 {
     FILE *archivo;
     char nomObj[25];
     char nomArc[40];
-    char *nombres[]={"p1.obj","AngryBird.obj","p2.obj","p3.obj"};
+    char *nombres[]={"p1.obj","AngryBird.obj","p2.obj","p3.obj"}; // ARREGLO DE ARCHIVOS //
     char aux;
     char extObj[4];
     int res,r,re;
