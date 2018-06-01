@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 
 #define MAX 50
 
@@ -72,9 +73,9 @@ typedef struct nodoObj
 } *L_Obj;
 //Calc_Anima(lvaCUB2,-5.0,-8-0,1.0,-2.0,5.0,1.0,2.0,5.0,1.0,5.0,-8.0,1.0);
 float Tx=-5.0,Ty=-8.0,Tz=1.0,Tstart=0;
-float Tx2=-2.0,Ty2=5.0,Tz2=1.0;
-float Tx3=2.0,Ty3=5.0,Tz3=1.0;
-float Tx4=5.0,Ty4=-8.0,Tz4=1.0;
+float Tx2=5.0,Ty2=5.0,Tz2=1.0;
+float Tx3=-2.0,Ty3=5.0,Tz3=1.0;
+float Tx4=-5.0,Ty4=-8.0,Tz4=1.0;
 float Rx=0.0,Ry=0.0,Rz=0.0;
 char nomArchivo[45];
 L_Vertex PLV;
@@ -111,7 +112,7 @@ void IniL_Vertex(L_Vertex *lv);
 void timer(int insu);
 int Ins_V_O(L_Obj lo, char *nom, Vertex v);
 void IniFace(Face *c);
-void R_Archivo( L_Obj *lo, L_Face *lc, L_Vertex *lv);
+void R_Archivo( L_Obj *lo, L_Face *lc, L_Vertex *lv, int numOBJ);
 int Ins_Obj(L_Obj *lo, char *nom);
 int Crea_NodoObj(L_Obj *lo, char *nom);
 int Crea_NodoVertex(L_Vertex *lv, Vertex v);
@@ -124,19 +125,16 @@ int Ins_Vertex(L_Vertex *lv, Vertex v);
 int Crea_NodoFace(L_Face *lc, Face c);
 void Calc_Anima(L_Vertex lv,float Px1,float Py1,float Pz1, float Px2,float Py2,float Pz2,float Px3,float Py3,float Pz3,float Px4,float Py4,float Pz4);
 void inici();
-void R_Archivo2(L_Obj *lo, L_Face *lc, L_Vertex *lv);
 void translate(L_Obj lo,float dx,float dy,float dz);
 void scale(L_Obj lo,float sx,float sy,float sz);
 void rotateX(L_Obj lo,float angle);
 void rotateY(L_Obj lo,float angle);
 void rotateZ(L_Obj lo,float angle);
 void keyboardFunc(unsigned char Key, int x, int y);
-void R_Archivo3(L_Obj *lo, L_Face *lc, L_Vertex *lv);
 void generateNormal(L_Obj lo);
 void unitvector(L_Obj lo,L_Face lca);
 int faceVisible(L_Obj lo,L_Face lca);
 float illumination(L_Obj lo,L_Face lca);
-void R_Archivo4(L_Obj *lo, L_Face *lc, L_Vertex *lv);
 
 static GLfloat spin = 0.0;
 
@@ -317,20 +315,20 @@ void inici(){
    iniListaOBJ(&PLO2);
    iniListaOBJ(&PLO3);
    iniListaOBJ(&PLO4);
-   R_Archivo(&PLO,&PLF,&PLV);
-   R_Archivo2(&PLO2,&PLF2,&PLV2);
-   R_Archivo3(&PLO3,&PLF3,&PLV3);
-   R_Archivo4(&PLO4,&PLF4,&PLV4);
-   Muestra_memory(PLO4);
+   R_Archivo(&PLO,&PLF,&PLV,0);
+   R_Archivo(&PLO2,&PLF2,&PLV2,1);
+   R_Archivo(&PLO3,&PLF3,&PLV3,2);
+   R_Archivo(&PLO4,&PLF4,&PLV4,3);
+   //Muestra_memory(PLO);
    //Muestra_memory(PLO2);
 }
 
-void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv)
+void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv, int numOBJ)
 {
     FILE *archivo;
     char nomObj[25];
-    char nomArc[20] = "p1";
-    //char nomArc[20] = "cube";
+    char nomArc[40];
+    char *nombres[]={"p1.obj","AngryBird.obj","p2.obj","p3.obj"};
     char aux;
     char extObj[4];
     int res,r,re;
@@ -340,8 +338,12 @@ void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv)
     int indver=0;
     int i,iaux;
 
-    strcpy(extObj,".obj");
-    strcat(nomArc,extObj);
+    //strcpy(nomArc, /*nombres[numOBJ]*/ "AngryBird.obj");
+    strcpy(nomArc, nombres[numOBJ]);
+
+    //strcpy(extObj,".obj");
+    //strcat(nomArc,extObj);
+
     archivo=fopen(nomArc,"r");
 
     if(!archivo)
@@ -401,271 +403,6 @@ void R_Archivo(L_Obj *lo, L_Face *lc, L_Vertex *lv)
         }
     }
 fclose(archivo);
-}
-
-void R_Archivo2(L_Obj *lo, L_Face *lc, L_Vertex *lv)
-{
-    FILE *archivo;
-    char nomObj[25];
-    char nomArc[20] = "AngryBird";
-    char aux;
-    char extObj[4];
-    int res,r,re;
-    Vertex vaux;
-    Face caux;
-    float faux, fauy, fauz;
-    int indver=0;
-    int i,iaux;
-
-    strcpy(extObj,".obj");
-    strcat(nomArc,extObj);
-    archivo=fopen(nomArc,"r");
-
-    if(!archivo)
-    {
-        printf("No se encuentra el archivo disponible\n");
-    }
-    else
-    {
-        while(fread(&aux,sizeof(char),1,archivo)>0)
-        {
-            if(aux=='o')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                    fscanf(archivo,"%s",nomObj);
-                    res=Ins_Obj(lo,nomObj);
-                }
-            }
-            if(aux=='v')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                        fscanf(archivo,"%f",&faux);
-                        vaux.x=faux;
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauy);
-                        vaux.y=fauy;
-                    }
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauz);
-                        vaux.z=fauz;
-                    }
-                    indver++;
-                    vaux.ID=indver-1;
-                }
-                r=Ins_V_O(*lo,nomObj,vaux);
-           }
-           if(aux=='f')
-           {
-               i=0;
-               IniFace(&caux);
-               while(fscanf(archivo,"%d",&iaux)>0)
-               {
-                   caux.face[i]=iaux-1;
-                   i++;
-               }
-               if((*lo)->sigObj!=0)
-               caux.face[i]=-1;
-               else
-               caux.face[i]=-1;
-               re=Ins_F_O(*lo,nomObj,caux);
-           }
-        }
-    }
-fclose(archivo);
-}
-void R_Archivo3(L_Obj *lo, L_Face *lc, L_Vertex *lv)
-{
-    FILE *archivo;
-    char nomObj[25];
-    char nomArc[20] = "p2";
-    char aux;
-    char extObj[4];
-    int res,r,re;
-    Vertex vaux;
-    Face caux;
-    float faux, fauy, fauz;
-    int indver=0;
-    int i,iaux;
-
-    strcpy(extObj,".obj");
-    strcat(nomArc,extObj);
-    archivo=fopen(nomArc,"r");
-
-    if(!archivo)
-    {
-        printf("No se encuentra el archivo disponible\n");
-    }
-    else
-    {
-        while(fread(&aux,sizeof(char),1,archivo)>0)
-        {
-            if(aux=='o')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                    fscanf(archivo,"%s",nomObj);
-                    res=Ins_Obj(lo,nomObj);
-                }
-            }
-            if(aux=='v')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                        fscanf(archivo,"%f",&faux);
-                        vaux.x=faux;
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauy);
-                        vaux.y=fauy;
-                    }
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauz);
-                        vaux.z=fauz;
-                    }
-                    indver++;
-                    vaux.ID=indver-1;
-                }
-                r=Ins_V_O(*lo,nomObj,vaux);
-           }
-           if(aux=='f')
-           {
-               i=0;
-               IniFace(&caux);
-               while(fscanf(archivo,"%d",&iaux)>0)
-               {
-                   caux.face[i]=iaux-1;
-                   i++;
-               }
-               if((*lo)->sigObj!=0)
-               caux.face[i]=-1;
-               else
-               caux.face[i]=-1;
-               re=Ins_F_O(*lo,nomObj,caux);
-           }
-        }
-    }
-fclose(archivo);
-}
-void R_Archivo4(L_Obj *lo, L_Face *lc, L_Vertex *lv)
-{
-    FILE *archivo;
-    char nomObj[25];
-    char nomArc[20] = "p3";
-    char aux;
-    char extObj[4];
-    int res,r,re;
-    Vertex vaux;
-    Face caux;
-    float faux, fauy, fauz;
-    int indver=0;
-    int i,iaux;
-
-    strcpy(extObj,".obj");
-    strcat(nomArc,extObj);
-    archivo=fopen(nomArc,"r");
-
-    if(!archivo)
-    {
-        printf("No se encuentra el archivo disponible\n");
-    }
-    else
-    {
-        while(fread(&aux,sizeof(char),1,archivo)>0)
-        {
-            if(aux=='o')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                    fscanf(archivo,"%s",nomObj);
-                    res=Ins_Obj(lo,nomObj);
-                }
-            }
-            if(aux=='v')
-            {
-                fscanf(archivo,"%c",&aux);
-                if(aux==' ')
-                {
-                        fscanf(archivo,"%f",&faux);
-                        vaux.x=faux;
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauy);
-                        vaux.y=fauy;
-                    }
-                    if(aux==' ')
-                    {
-                        fscanf(archivo,"%f",&fauz);
-                        vaux.z=fauz;
-                    }
-                    indver++;
-                    vaux.ID=indver-1;
-                }
-                r=Ins_V_O(*lo,nomObj,vaux);
-           }
-           if(aux=='f')
-           {
-               i=0;
-               IniFace(&caux);
-               while(fscanf(archivo,"%d",&iaux)>0)
-               {
-                   caux.face[i]=iaux-1;
-                   i++;
-               }
-               if((*lo)->sigObj!=0)
-               caux.face[i]=-1;
-               else
-               caux.face[i]=-1;
-               re=Ins_F_O(*lo,nomObj,caux);
-           }
-        }
-    }
-fclose(archivo);
-}
-void Muestra_memory(L_Obj lo)
-{
-    L_Vertex lva;
-    L_Face lca;
-    int i;
-
-    while(lo)
-    {
-        printf("%s\n",lo->nombre);
-        lva=lo->cabVer;
-        lca=lo->cabFace;
-        while(lva)
-        {
-            printf("%f ",lva->ver.x);
-            printf("%f ",lva->ver.y);
-            printf("%f\n",lva->ver.z);
-            lva=lva->sigVer;
-        }
-        while(lca)
-        {
-            for(i=0;i<MAX;i++)
-            {
-                if(lca->face.face [i]!=-1)
-                    printf("%d ",lca->face.face[i]);
-                else
-                {
-                    printf("\n");
-                    i=MAX;
-                }
-            }
-            lca=lca->sigFace;
-        }
-        printf("\n");
-        lo=lo->sigObj;
-    }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void init(void)
@@ -701,8 +438,22 @@ void init(void)
 void spinDisplay(void)
 {
    spin = spin + 2.0;
-   if (spin > 360.0)
+   if (spin > 360.0){
       spin = spin - 360.0;
+
+   }
+   Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
+      Calc_Anima(lvaCUB3,2.5,2.5,2.5,3.0,3.0,3.0,0.0,0.0,1.1,4.0,-8.1,8.0);
+      //Calc_Anima(lvaCUB,3.0,0.0,2.0,3.5,0.5,3.5,0.0,0.0,1.1,4.0,-8.1,8.0);
+      //Calc_Anima(lvaCUB4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.1,4.0,-8.1,8.0);
+      if(Rx<=180){
+        rotateX (PLO,Rx);
+   rotateY (PLO,Rx++);
+   rotateZ (PLO,Rx++);
+   rotateX (PLO4,Rx++);
+   rotateY (PLO4,Rx++);
+   rotateZ (PLO4,Rx++);
+      }
    glutPostRedisplay();
 }
 
@@ -727,9 +478,12 @@ void reshape(int w, int h)
    PLO4->colr.R=0.0;
    PLO4->colr.G=1.0;
    PLO4->colr.B=1.0;
-   //rotateX (PLO3,Rx);
-   //rotateY (PLO3,Ry);
-   //rotateZ (PLO3,Rz);
+   rotateX (PLO,Rx);
+   rotateY (PLO,Rx);
+   rotateZ (PLO,Rx);
+   rotateX (PLO4,Rx);
+   rotateY (PLO4,Rx);
+   rotateZ (PLO4,Rx);
    //scale(PLO3,0.8, 0.8, 0.8);
    //translate (PLO3,-2.0, 0.0, -3.0);
    generateNormal(PLO);
@@ -762,6 +516,8 @@ void display(void)
     lvaCUB3 = PLO3->cabVer;
     lvaCUB4 = PLO4->cabVer;
     //glRotatef(spin,0.0,0.0,1.0);
+    //timer(0);
+    //spinDisplay();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -775,32 +531,37 @@ void display(void)
 	}
 	glEnd();
 	glPushMatrix();
-	glRotatef(spin, 0.0, 1.0, 0.0);
+	//glRotatef(spin, 0.0, 1.0, 0.0);
 	glPopMatrix();
 
-        if(lvaCUB){
+    /*if(lvaCUB){
         if(t<=2.0){
 
             //-6.0,8.5,1.0,1.0,-8.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
             //-8.0,-8.1,-4.0,-4.1,1.0,4.0,4.0,1.0,1.0,8.0,8.0,1.0
 
-                Calc_Anima(lvaCUB4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.1,4.0,-8.1,8.0);
+               /* Calc_Anima(lvaCUB4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.1,4.0,-8.1,8.0);
                 Calc_Anima(lvaCUB3,2.5,2.5,2.5,3.0,3.0,3.0,0.0,0.0,1.1,4.0,-8.1,8.0);
                 Calc_Anima(lvaCUB,3.0,0.0,2.0,3.5,0.5,3.5,0.0,0.0,1.1,4.0,-8.1,8.0);
                 rotateZ (PLO3,Rz+.01);
-            Dib_f_display(PLO);
-            Dib_f_display(PLO2);
-            Dib_f_display(PLO3);
+            Dib_f_display(PLO);*/
+            //rotateZ (PLO3,30.0);
+            //rotateX (PLO3,30.0);
+            //rotateY (PLO3,30.0);
+            //Dib_f_display(PLO2);
+            //Dib_f_display(PLO3);
+            //Dib_f_display(PLO3);
+            /*Dib_f_display(PLO3);
             Dib_f_display(PLO4);
             //rotateZ (PLO4,Rz);
-            //scale(PLO4,Rx,Ry,Rz);
+            //scale(PLO4,Rx,Ry,Rz);*/
 
-        }
+       /* }
         else
             t=0;
-    }
+    }*/
 
-    if(lvaCUB2){
+    /*if(lvaCUB2){
         if(t<=2.0){
 
             //glRotatef(spin, 0.0, 1.0, 0.0);
@@ -810,25 +571,35 @@ void display(void)
             if(Tstart>=1){
                 Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
             }
+            Dib_f_display(PLO);*/
+            //rotateZ (PLO,30.0);
+            //rotateX (PLO,30.0);
+            //rotateY (PLO3,30.0);
+
             Dib_f_display(PLO);
             Dib_f_display(PLO2);
             Dib_f_display(PLO3);
             Dib_f_display(PLO4);
+
+            /*Dib_f_display(PLO3);
+            Dib_f_display(PLO4);
         }
         else
             t=0;
-    }
+    }*/
 
 
 
     glutSwapBuffers();
     glFlush();
-    timer(0);
+    //timer(0);
 
 }
 
 void timer(int insu){
     glutTimerFunc(20,timer,2);
+    Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
+    Calc_Anima(lvaCUB3,2.5,2.5,2.5,3.0,3.0,3.0,0.0,0.0,1.1,4.0,-8.1,8.0);
     glutPostRedisplay();
 }
 
@@ -1070,7 +841,7 @@ void rotateZ(L_Obj lo,float angle){
                         if(lca->face.face [i] == lva->ver.ID)
                         {
                             lva->ver.x= cos(rad) * lva->ver.x - sin(rad) * lva->ver.y;
-                            lva->ver.y= sin(rad) * lva->ver.x - cos(rad) * lva->ver.y;
+                            lva->ver.y= sin(rad) * lva->ver.x + cos(rad) * lva->ver.y;
                         }
                         lva=lva->sigVer;
                     }
