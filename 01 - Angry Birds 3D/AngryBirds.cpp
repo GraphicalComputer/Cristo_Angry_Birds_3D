@@ -442,18 +442,18 @@ void spinDisplay(void)
       spin = spin - 360.0;
 
    }
-   Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
+   /*Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
       Calc_Anima(lvaCUB3,2.5,2.5,2.5,3.0,3.0,3.0,0.0,0.0,1.1,4.0,-8.1,8.0);
       //Calc_Anima(lvaCUB,3.0,0.0,2.0,3.5,0.5,3.5,0.0,0.0,1.1,4.0,-8.1,8.0);
       //Calc_Anima(lvaCUB4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.1,4.0,-8.1,8.0);
-      if(Rx<=180){
+      if(Rx<=90){
         rotateX (PLO,Rx);
    rotateY (PLO,Rx++);
    rotateZ (PLO,Rx++);
    rotateX (PLO4,Rx++);
    rotateY (PLO4,Rx++);
    rotateZ (PLO4,Rx++);
-      }
+      }*/
    glutPostRedisplay();
 }
 
@@ -478,14 +478,14 @@ void reshape(int w, int h)
    PLO4->colr.R=0.0;
    PLO4->colr.G=1.0;
    PLO4->colr.B=1.0;
-   rotateX (PLO,Rx);
-   rotateY (PLO,Rx);
-   rotateZ (PLO,Rx);
-   rotateX (PLO4,Rx);
+   //rotateX (PLO4,90);
+   //rotateY (PLO4,90);
+   rotateZ (PLO4,90);
+  /* rotateX (PLO4,Rx);
    rotateY (PLO4,Rx);
-   rotateZ (PLO4,Rx);
-   //scale(PLO3,0.8, 0.8, 0.8);
-   //translate (PLO3,-2.0, 0.0, -3.0);
+   rotateZ (PLO4,Rx);*/
+   //scale(PLO4,0.8, 0.8, 0.8);
+   //translate (PLO4,-2.0, 0.0, -3.0);
    generateNormal(PLO);
    generateNormal(PLO2);
    generateNormal(PLO3);
@@ -516,7 +516,7 @@ void display(void)
     lvaCUB3 = PLO3->cabVer;
     lvaCUB4 = PLO4->cabVer;
     //glRotatef(spin,0.0,0.0,1.0);
-    //timer(0);
+    timer(0);
     //spinDisplay();
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -600,6 +600,14 @@ void timer(int insu){
     glutTimerFunc(20,timer,2);
     Calc_Anima(lvaCUB2,Tx,Ty,Tz,Tx2,Ty2,Tz2,Tx3,Ty3,Tz3,Tx4,Ty4,Tz4);
     Calc_Anima(lvaCUB3,2.5,2.5,2.5,3.0,3.0,3.0,0.0,0.0,1.1,4.0,-8.1,8.0);
+    /*for(Rx=0.0;Rx<=90;Rx++){
+        rotateX (PLO,Rx);
+   rotateY (PLO,Rx);
+   rotateZ (PLO,Rx);
+   rotateX (PLO4,Rx);
+   rotateY (PLO4,Rx);
+   rotateZ (PLO4,Rx);
+      }*/
     glutPostRedisplay();
 }
 
@@ -771,7 +779,8 @@ void rotateX(L_Obj lo,float angle){
                         if(lca->face.face [i] == lva->ver.ID)
                         {
                             lva->ver.y= cos(rad) * lva->ver.y - sin(rad) * lva->ver.z;
-                            lva->ver.z= sin(rad) * lva->ver.y - cos(rad) * lva->ver.z;
+                            //printf("%f",lva->ver.y);
+                            lva->ver.z= sin(rad) * lva->ver.y + cos(rad) * lva->ver.z;
                         }
                         lva=lva->sigVer;
                     }
@@ -805,8 +814,8 @@ void rotateY(L_Obj lo,float angle){
                     {
                         if(lca->face.face [i] == lva->ver.ID)
                         {
-                            lva->ver.x= cos(rad) * lva->ver.x - sin(rad) * lva->ver.z;
-                            lva->ver.z= cos(rad) * lva->ver.z - sin(rad) * lva->ver.x;
+                            lva->ver.x= cos(rad) * lva->ver.x + sin(rad) * lva->ver.z;
+                            lva->ver.z= cos(rad) * lva->ver.z + sin(rad) * lva->ver.x;
                         }
                         lva=lva->sigVer;
                     }
@@ -825,6 +834,7 @@ void rotateY(L_Obj lo,float angle){
 void rotateZ(L_Obj lo,float angle){
     L_Vertex lva;
     L_Face lca;
+    Vertex vec1;
     int i,vc;
     float rad = (angle * 3.1416) / 100.0;
     while(lo)
@@ -842,6 +852,10 @@ void rotateZ(L_Obj lo,float angle){
                         {
                             lva->ver.x= cos(rad) * lva->ver.x - sin(rad) * lva->ver.y;
                             lva->ver.y= sin(rad) * lva->ver.x + cos(rad) * lva->ver.y;
+                            //vec1.x=cos(rad) * lva->ver.x - sin(rad) * lva->ver.y;
+                            //vec1.y=sin(rad) * lva->ver.x + cos(rad) * lva->ver.y;
+                            //Vertex->x=cos(rad) * lva->ver.x - sin(rad) * lva->ver.y;
+                            //Vertex->y=sin(rad) * lva->ver.x + cos(rad) * lva->ver.y;
                         }
                         lva=lva->sigVer;
                     }
